@@ -14,4 +14,4 @@ RUN apt-get update && apt-get install -y ffmpeg && pip install -r requirements.t
 EXPOSE 80
 
 # Run stream_to_youtube.py when the container launches
-CMD ["python", "stream_to_youtube.py"]
+CMD ["python", "stream.py"]
