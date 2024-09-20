@@ -8,7 +8,7 @@ WORKDIR /app
 ADD . /app
 
 # Install any needed packages specified in requirements.txt
-RUN apt-get update && apt-get install -y ffmpeg && pip install -r requirements.txt
+RUN apt-get update && apt-get install -y ffmpeg
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
