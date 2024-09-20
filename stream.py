@@ -1,25 +1,43 @@
 import os
-from flask import Flask
+import subprocess
+import datetime
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
-YOUTUBE_STREAM_KEY = 'd9p4-k14d-b9c9-3fyr-f0xj' 
+YOUTUBE_STREAM_KEY = 'd9p4-k14d-b9c9-3fyr-f0xj'
 
 if not YOUTUBE_STREAM_KEY:
     print("Error: YouTube stream key is not set.")
     exit(1)
 
-VIDEO_PATH = "fblite_video-5.mp4" 
+
+VIDEO_PATH = "fblite_video-5.mp4"
+
 ffmpeg_command = f"""
 ffmpeg -re -stream_loop -1 -i {VIDEO_PATH} -vcodec libx264 -pix_fmt yuv420p -preset veryfast -maxrate 3000k -bufsize 6000k -acodec aac -ar 44100 -b:a 128k -f flv rtmp://a.rtmp.youtube.com/live2/{YOUTUBE_STREAM_KEY}
-"""  
+"""
+
+stream_start_time = datetime.datetime.utcnow()
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint for Render"""
     return "OK", 200
 
+@app.route('/api/stream', methods=['GET'])
+def stream_status():
+    """Return the stream start time"""
+    return jsonify({
+        "start_time": stream_start_time.isoformat() + "Z"
+    })
+
+@app.route('/')
+def index():
+    """Serve the index.html page"""
+    return render_template('index.html')
+
 if __name__ == '__main__':
-    os.system(ffmpeg_command)
-    
-    # Start the Flask app on port 10000
+    process = subprocess.Popen(ffmpeg_command, shell=True)
+
     app.run(host='0.0.0.0', port=10000)
