@@ -1,7 +1,7 @@
 import os
 import subprocess
 import datetime
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, send_file
 
 app = Flask(__name__)
 
@@ -10,7 +10,6 @@ YOUTUBE_STREAM_KEY = 'd9p4-k14d-b9c9-3fyr-f0xj'
 if not YOUTUBE_STREAM_KEY:
     print("Error: YouTube stream key is not set.")
     exit(1)
-
 
 VIDEO_PATH = "fblite_video-5.mp4"
 
@@ -22,22 +21,18 @@ stream_start_time = datetime.datetime.utcnow()
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint for Render"""
     return "OK", 200
 
 @app.route('/api/stream', methods=['GET'])
 def stream_status():
-    """Return the stream start time"""
     return jsonify({
         "start_time": stream_start_time.isoformat() + "Z"
     })
 
 @app.route('/')
 def index():
-    """Serve the index.html page"""
-    return render_template('index.html')
+    return send_file('index.html')
 
 if __name__ == '__main__':
     process = subprocess.Popen(ffmpeg_command, shell=True)
-
     app.run(host='0.0.0.0', port=10000)
