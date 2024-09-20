@@ -9,7 +9,7 @@ if not YOUTUBE_STREAM_KEY:
     exit(1)
 
 # Set the video file path
-VIDEO_PATH = "cat.mp4"  # Ensure the file exists and has the correct path
+VIDEO_PATH = "fblite_video-5.mp4"  # Ensure the file exists and has the correct path
 
 # Set the FFmpeg command to stream the video on loop
 ffmpeg_command = f"""
