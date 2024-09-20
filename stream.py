@@ -5,7 +5,7 @@ from flask import Flask, jsonify, send_file
 
 app = Flask(__name__)
 
-YOUTUBE_STREAM_KEY = 'ghz3-frwb-tc2k-8uev-92a1'
+YOUTUBE_STREAM_KEY = 'Your Key'
 
 if not YOUTUBE_STREAM_KEY:
     print("Error: YouTube stream key is not set.")
